@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو المقهى الذكي</title>
+    <style>
+        :root {
+            --primary: #6f4e37;
+            --secondary: #f4f1ea;
+            --dark: #332211;
+            --accent: #e4a853;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--secondary);
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+        }
+
+        .navbar {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .table-badge {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            text-align: right;
+            margin: 25px 0 15px;
+            font-size: 1.3rem;
+            border-right: 4px solid var(--primary);
+            padding-right: 10px;
+        }
+
+        .menu-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-info {
+            text-align: right;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .card-price {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--dark);
+        }
+
+        .cart-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            text-align: right;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #ddd;
+            padding: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .btn-order {
+            background: #27ae60;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+        }
+
+        .btn-order:hover {
+            background: #219150;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div>مقهى النخبة الرقمي</div>
+        <div id="table-display" class="table-badge">جاري التعرف على الطاولة...</div>
+    </div>
+
+    <div class="container">
+        <div class="section-title">المشروبات الساخنة</div>
+        <div class="menu-grid">
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">إسبريسو سينجل</div>
+                    <div class="card-price">12 ر.س</div>
+                </div>
+                <button class="btn" onclick="addToCart('إسبريسو سينجل', 12)">إضافة +</button>
+            </div>
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">كابوتشينو كلاسيك</div>
+                    <div class="card-price">18 ر.س</div>
+                </div>
+                <button class="btn" onclick="addToCart('كابوتشينو كلاسيك', 18)">إضافة +</button>
+            </div>
+        </div>
+
+        <div class="section-title">المشروبات الباردة</div>
+        <div class="menu-grid">
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">سبانيش لاتيه بارد</div>
+                    <div class="card-price">24 ر.س</div>
+                </div>
+                <button class="btn" onclick="addToCart('سبانيش لاتيه بارد', 24)">إضافة +</button>
+            </div>
+            <div class="card">
+                <div class="card-info">
+                    <div class="card-title">آيس أميريكانو</div>
+                    <div class="card-price">15 r.s</div>
+                </div>
+                <button class="btn" onclick="addToCart('آيس أميريكانو', 15)">إضافة +</button>
+            </div>
+        </div>
+
+        <div class="cart-box">
+            <h3 style="margin-top:0; border-bottom: 2px solid var(--secondary); padding-bottom: 10px;">سلة طلباتك</h3>
+            <div id="cart-items"></div>
+            <div class="total-row">
+                <span>الحساب الإجمالي:</span>
+                <span><span id="total-price">0</span> ر.س</span>
+            </div>
+            <button class="btn btn-order" onclick="submitOrder()">تأكيد وإرسال الطلب</button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tableNumber = urlParams.get('table') || "تحضير خارجي";
+        document.getElementById('table-display').innerText = `طاولة رقم: ${tableNumber}`;
+
+        let cart = [];
+        let total = 0;
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            total += price;
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = cart.length === 0 ? '<p style="color:#777; text-align:center;">السلة فارغة حالياً</p>' : '';
+            cart.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span style="font-weight:bold; color:var(--primary)">${item.price} ر.س</span>
+                    </div>`;
+            });
+            document.getElementById('total-price').innerText = total;
+        }
+        renderCart();
+
+        function submitOrder() {
+            if (cart.length === 0) return alert("الرجاء إضافة مشروبات إلى السلة أولاً!");
+
+            const orderData = { table: tableNumber, items: cart, total: total };
+
+            fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(`شكراً لك! تم إرسال طلبك للباريستا وسيقدم لك عند طاولة ${tableNumber}.`);
+                    cart = []; total = 0; renderCart();
+                })
+                .catch(err => alert("حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً."));
+        }
+    </script>
+</body>
+
+</html>
